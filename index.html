@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="./js/country-states.js"></script>
+</head>
+<body>
+    <form align="center">
+    <label for="name">NAME:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="phno">PHONE NUMBER:</label>
+    <input type="tel" id="phno" name="phno"><br><br>
+    <label for="email">EMAIL ADDRESS:</label>
+    <input type="text"id='email'name='email'><br><br>
+    <label for="add">ADDRESS:</label>
+    <input type="text" id="add" name="add"><br><br>
+    <label for="pcode">POSTAL CODE:</label>
+    <input type="digit" id="pcode" name="pcode"><br><br>
+<div>
+<label for="country">COUNTRY:</label>
+<select id="country">
+    <option>select country</option>
+</select>
+</div>
+<br>
+<div>
+<label for="state">STATE:</label>
+<select id="state-code"><option>select state</option> </select>
+</div>
+<br>
+
+<script>
+// user country code for selected option
+let user_country_code = "";
+
+
+(function () {
+    
+    let country_list = country_and_states['country'];
+    let states_list = country_and_states['states'];
+
+    // creating country name drop-down
+    let option =  '';
+    option += '<option>select country</option>';
+    for(let country_code in country_list){
+        // set selected option user country
+        let selected = (country_code == user_country_code) ? ' selected' : '';
+        option += '<option value="'+country_code+'"'+selected+'>'+country_list[country_code]+'</option>';
+    }
+    document.getElementById('country').innerHTML = option;
+
+    // creating states name drop-down
+    let text_box = '<option>select state</option>';
+    let state_code_id = document.getElementById("state-code");
+
+    function create_states_dropdown() {
+        // get selected country code
+        let country_code = document.getElementById("country").value;
+        let states = states_list[country_code];
+        // invalid country code or no states add textbox
+        if(!states){
+            state_code_id.innerHTML = text_box;
+            return;
+        }
+        let option = '';
+        if (states.length > 0) {
+            option = '<select id="state" name="state">\n';
+            for (let i = 0; i < states.length; i++) {
+                option += '<option value="'+states[i].code+'">'+states[i].name+'</option>';
+            }
+            option += '</select>';
+        } else {
+            // create input textbox if no states 
+            option = text_box
+        }
+        state_code_id.innerHTML = option;
+    }
+
+    // country select change event
+    const country_select = document.getElementById("country");
+    country_select.addEventListener('change', create_states_dropdown);
+
+    create_states_dropdown();
+})();
+
+</script>
+<input type="SUBMIT" id="submit" name="submit"><br><br>
+</form>
+</body>
+</html>
